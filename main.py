@@ -17,5 +17,8 @@ regex = re.compile('\d+')
 
 for line in last_url.splitlines():
   match = regex.findall(line)
+lastnum = int(match[0]) + 1
 
-print(match[0])
+#make detail list
+for num in range(2,lastnum):
+    print(num)
