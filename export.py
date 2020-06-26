@@ -3,10 +3,10 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-def export_csv(idlist,idlist_new):
-
+def export_csv(idlist,memo):
     # ファイルオープン
-    f = open('output.csv', 'w')
+    f_name = "output_"+memo+".csv"
+    f = open(f_name, 'w')
 
     # header を設定
     fieldnames = ['URL','案件名','単価','契約形態','最寄り駅','業界/職種・ポジション','職務内容','求めるスキル','扱う技術','精算','現場の環境','おすすめポイント','担当者コメント']
@@ -16,7 +16,7 @@ def export_csv(idlist,idlist_new):
     writer = csv.writer(f, lineterminator='\n')
 
     # 新着の出力/detailid内へ移動して
-    for detail in idlist_new:
+    for detail in idlist:
         export=list()
         project_page = "https://freelance.levtech.jp" + detail
         r = requests.get(project_page)
@@ -114,9 +114,9 @@ def export_csv(idlist,idlist_new):
         else:
             export.append("おすすめポイントは取得できませんでした")
         
-        job_comment = soup.find("p",class_="pjtComment__detail__txt").text.strip()
+        job_comment = soup.find("p",class_="pjtComment__detail__txt")
         if job_comment:
-            export.append(job_comment)
+            export.append(job_comment.text.strip())
         else:
             export.append('担当者コメントは取得できませんでした')
             
